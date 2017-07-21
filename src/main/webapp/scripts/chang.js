@@ -1,6 +1,6 @@
 $(function(){
     $("#back").click(function(){
-        window.location="/user/edit.do";
+        window.location="edit.do";
     });
     $("#last_password").change(function(){
         var lastPass = $("#last_password").val();
@@ -33,7 +33,7 @@ $(function(){
         }
         if(flag){
             $.ajax({
-                url:base_path+"user/changpass.do",
+                url:base_path+"changpass.do",
                 data:{"uid":uuid,"newPass":newPass,"lastPass":lastPass},
                 type:"post",
                 dataType:"json",

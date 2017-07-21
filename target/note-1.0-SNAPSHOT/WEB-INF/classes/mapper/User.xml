@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.chens.dao.UserDao">
+<select id="findByName" parameterType="string" resultType="com.chens.entry.User">
+    SELECT user.cn_user_id,user.cn_user_name,
+    user.cn_user_password,user.cn_user_token,
+    user.cn_user_nick FROM cn_user as user
+    where user.cn_user_name =#{cn_user_name}
+</select>
+    <insert id="addUser" parameterType="com.chens.entry.User" >
+        INSERT INTO cn_user  (cn_user_id,cn_user_name,cn_user_password,cn_user_token,cn_user_nick)
+        VALUES(#{cn_user_id},#{cn_user_name},#{cn_user_password},#{cn_user_token},#{cn_user_nick})
+    </insert>
+<update id="uppass" parameterType="com.chens.entry.User">
+     UPDATE cn_user SET cn_user_password=#{cn_user_password} WHERE  cn_user_id = #{cn_user_id}
+</update>
+    <select id="findById" parameterType="string" resultType="com.chens.entry.User">
+        SELECT  cn_user_id,cn_user_name FROM  cn_user where cn_user_id= #{user_id}
+    </select>
+    <update id="changPass" parameterType="com.chens.entry.User">
+        UPDATE  cn_user SET  cn_user_password = #{newPass}  where cn_user_password = #{lastPass}
+    </update>
+</mapper>

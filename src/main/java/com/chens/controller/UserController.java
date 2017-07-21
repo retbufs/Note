@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 @Controller
-@RequestMapping("/user")
 public class UserController {
     @Resource(name ="userService")
     private BaseUserService service;
