@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.chens.dao.NoteDao">
+<select id="findBookById" resultType="com.chens.entry.Note" parameterType="string">
+    SELECT *  FROM  cn_note where cn_notebook_id= #{id} AND  cn_note_status_id = '1'
+</select>
+    <select id="findByNoId" resultType="com.chens.entry.Note" parameterType="string">
+          SELECT *  FROM  cn_note where cn_note_id= #{id}
+    </select>
+    <update id="update" parameterType="com.chens.entry.Note">
+      UPDATE  cn_note SET  cn_note_title=#{cn_note_title},cn_note_body=#{cn_note_body},
+      cn_note_last_modify_time=#{cn_note_last_modify_time} WHERE  cn_note_id = #{cn_note_id}
+    </update>
+    <insert id="addNote"  parameterType="com.chens.entry.Note">
+        INSERT  INTO cn_note(
+        cn_note_id,cn_notebook_id,
+        cn_user_id,cn_note_status_id,
+        cn_note_type_id,cn_note_title,
+        cn_note_body,cn_note_create_time,
+        cn_note_last_modify_time)
+        VALUES(
+        #{cn_note_id},#{cn_notebook_id},
+        #{cn_user_id},#{cn_note_status_id},
+        #{cn_note_type_id},#{cn_note_title},
+        #{cn_note_body},#{cn_note_create_time},
+        #{cn_note_last_modify_time})
+    </insert>
+    <update id="deleteNote" parameterType="string">
+        UPDATE  cn_note SET cn_note_status_id = 2 WHERE cn_note_id = #{cn_note_id}
+    </update>
+    <update id="moveNote" parameterType="com.chens.entry.Note">
+        UPDATE cn_note SET  cn_notebook_id=#{cn_notebook_id} WHERE  cn_note_id =#{cn_note_id}
+    </update>
+    <select id="recycle" parameterType="string" resultType="com.chens.entry.Note">
+        SELECT  * FROM  cn_note WHERE  cn_note_status_id ='2'
+    </select>
+  <delete id="delete" parameterType="string">
+      DELETE  from cn_note WHERE  cn_note_id = #{id}
+  </delete>
+    <update id="recycleNote" parameterType="com.chens.entry.Note">
+        UPDATE  cn_note SET cn_note_status_id = 1 ,cn_notebook_id = #{cn_notebook_id} WHERE cn_note_id = #{cn_note_id}
+    </update>
+</mapper>

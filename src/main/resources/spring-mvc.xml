@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+  http://www.springframework.org/schema/aop
+  http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+  http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context-4.3.xsd
+  http://www.springframework.org/schema/mvc
+  http://www.springframework.org/schema/mvc/spring-mvc.xsd
+  http://www.springframework.org/schema/util
+  http://www.springframework.org/schema/util/spring-util.xsd">
+    <!--开启注解-->
+    <mvc:annotation-driven/>
+    <!--注解扫描-->
+    <context:component-scan base-package="com.chens"/>
+    <!--加载db配置文件-->
+    <util:properties id="prop" location="classpath:db.properties"/>
+    <!--配置数据源-->
+    <bean id="ds" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="#{prop.driver}"/>
+        <property name="username" value="#{prop.user}"/>
+        <property name="url" value="#{prop.url}"/>
+        <property name="password" value="#{prop.password}"/>
+        <property name="maxActive" value="#{prop.maxActive}"/>
+        <property name="initialSize" value="#{prop.initSize}"/>
+    </bean>
+    <!--配置MyBatis-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+        <property name="dataSource" ref="ds"/>
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+     <!--配置myBatis注解-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.chens.dao"/>
+        <property  name="annotationClass" value="com.chens.dao.annotation.MyBatisAnnotation"/>
+    </bean>
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".html"/>
+    </bean>
+
+    <!--配置拦截器-->
+    <!--<mvc:interceptors>-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/*"/>-->
+            <!--<mvc:exclude-mapping path="/login.do"/>-->
+            <!--<mvc:exclude-mapping path="/checklog.do"/>-->
+            <!--<mvc:exclude-mapping path="/checkreg.do"/>-->
+            <!--<bean class="com.chens.Interceptor.SessionInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+
+</beans>
